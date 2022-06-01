@@ -1,12 +1,16 @@
 using BusinessObjects;
+using DTOs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
@@ -24,6 +28,14 @@ namespace ProjectManagementAPI
 
         public IConfiguration Configuration { get; }
 
+        private IEdmModel GetEdmModel()
+        {
+            var builder = new ODataConventionModelBuilder();
+            builder.EntitySet<ProductDTO>("Products").EntityType.HasKey(x => x.ProductId);
+            builder.EntitySet<CategoryDTO>("Categories").EntityType.HasKey(x => x.CategoryId);
+            return builder.GetEdmModel();
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -33,6 +45,7 @@ namespace ProjectManagementAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProjectManagementAPI", Version = "v1" });
             });
+            services.AddControllers().AddOData(options => options.Select().Filter().Count().OrderBy().Expand().SetMaxTop(100).AddRouteComponents("odata", GetEdmModel()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +57,8 @@ namespace ProjectManagementAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectManagementAPI v1"));
             }
+
+            app.UseODataBatching();
 
             app.UseRouting();
 
