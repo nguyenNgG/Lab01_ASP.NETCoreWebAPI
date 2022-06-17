@@ -23,14 +23,16 @@ namespace ProductManagementWebClient.Controllers
 
         public async Task<IActionResult> Index()
         {
-            HttpResponseMessage response = await client.GetAsync(ProductApiUrl);
-            string strData = await response.Content.ReadAsStringAsync();
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-            };
-            List<ProductDTO> products = JsonSerializer.Deserialize<List<ProductDTO>>(strData, options);
-            return View(products);
+            //HttpResponseMessage response = await client.GetAsync(ProductApiUrl);
+            //string strData = await response.Content.ReadAsStringAsync();
+            //var options = new JsonSerializerOptions
+            //{
+            //    PropertyNameCaseInsensitive = true,
+            //};
+            //List<ProductDTO> products = JsonSerializer.Deserialize<List<ProductDTO>>(strData, options);
+            //return View(products);
+            var html = System.IO.File.ReadAllText(@"./Views/Product/Index.html");
+            return base.Content(html, "text/html");
         }
     }
 }

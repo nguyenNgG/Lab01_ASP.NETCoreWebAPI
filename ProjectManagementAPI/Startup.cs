@@ -40,6 +40,9 @@ namespace ProjectManagementAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddCors();
+            services.AddControllersWithViews()
+                .AddXmlDataContractSerializerFormatters();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -57,6 +60,11 @@ namespace ProjectManagementAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectManagementAPI v1"));
             }
+
+            app.UseCors(builder =>
+            {
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+            });
 
             app.UseODataBatching();
 
