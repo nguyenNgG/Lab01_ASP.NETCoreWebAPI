@@ -17,6 +17,12 @@ namespace ProjectManagementAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<ProductDTO>> GetProducts() => repository.GetProducts();
 
+        [HttpGet("{id}")]
+        public IActionResult GetProduct(int id)
+        {
+            return NoContent();
+        }
+
         [HttpPost]
         public IActionResult PostProduct(ProductDTO product)
         {
