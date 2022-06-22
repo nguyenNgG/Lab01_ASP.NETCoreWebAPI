@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Repositories;
 using DTOs;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace ProjectManagementAPI.Controllers
 {
@@ -12,6 +13,7 @@ namespace ProjectManagementAPI.Controllers
     {
         private IProductRepository repository = new ProductRepository();
 
+        [EnableQuery]
         [HttpGet]
         public ActionResult<IEnumerable<ProductDTO>> GetProducts() => repository.GetProducts();
 
