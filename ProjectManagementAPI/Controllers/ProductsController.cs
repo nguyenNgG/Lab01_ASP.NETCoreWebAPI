@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DTOs;
 using Microsoft.AspNetCore.Mvc;
-using Repositories;
-using DTOs;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.OData.Query;
+using Repositories;
+using System.Collections.Generic;
 
 namespace ProjectManagementAPI.Controllers
 {
@@ -11,7 +10,11 @@ namespace ProjectManagementAPI.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private IProductRepository repository = new ProductRepository();
+        private readonly IProductRepository repository;
+        public ProductsController(IProductRepository _repository)
+        {
+            repository = _repository;
+        }
 
         [EnableQuery]
         [HttpGet]

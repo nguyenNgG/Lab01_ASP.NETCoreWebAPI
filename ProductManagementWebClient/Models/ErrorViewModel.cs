@@ -1,5 +1,3 @@
-using System;
-
 namespace ProductManagementWebClient.Models
 {
     public class ErrorViewModel
