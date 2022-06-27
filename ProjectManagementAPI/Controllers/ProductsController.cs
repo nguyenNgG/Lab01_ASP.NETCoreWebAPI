@@ -4,6 +4,9 @@ using Repositories;
 using DTOs;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.OData.Query;
+using ServiceReference1;
+using System.ServiceModel;
+using System.Threading.Tasks;
 
 namespace ProjectManagementAPI.Controllers
 {
@@ -18,9 +21,13 @@ namespace ProjectManagementAPI.Controllers
         public ActionResult<IEnumerable<ProductDTO>> GetProducts() => repository.GetProducts();
 
         [HttpGet("{id}")]
-        public IActionResult GetProduct(int id)
+        public async Task<IActionResult> GetProduct(int id)
         {
-            return NoContent();
+            BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
+            EndpointAddress address = new EndpointAddress("http://localhost:8000/WcfMyStore/ProductService");
+            ProductServiceClient client = new ProductServiceClient(basicHttpBinding, address);
+            Product product = await client.GetDataAsync(id);
+            return Ok(product);
         }
 
         [HttpPost]

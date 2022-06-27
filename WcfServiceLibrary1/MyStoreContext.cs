@@ -19,7 +19,8 @@ namespace WcfMyStoreService
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=.\\SQLEXPRESS;database=MyStore;uid=sa;pwd=123;");
+            //optionsBuilder.UseSqlServer("server=.\\SQLEXPRESS;database=MyStore;uid=sa;pwd=123;");
+            optionsBuilder.UseSqlServer("server=(local);database=MyStore;uid=sa;pwd=1234567890;");
         }
 
         public virtual DbSet<Category> Categories { get; set; }
