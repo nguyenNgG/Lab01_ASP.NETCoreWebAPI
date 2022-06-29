@@ -1,0 +1,30 @@
+﻿syntax = "proto3";
+package productcrud;
+option csharp_namespace = "ProductGrpcService";
+import "customTypes.proto";
+
+service ProductCRUD {
+  rpc GetAll(Empty) returns (Products);
+  rpc Get(ProductId) returns (Product);
+  rpc Add(Product) returns (Empty);
+  rpc Update(Product) returns (Empty);
+  rpc Delete(ProductId) returns (Empty);
+}
+
+message Empty {}
+
+message Product {
+	int32 productId = 1;
+	string productName = 2;
+	int32 categoryId = 3;
+	int32 unitsInStock = 4;
+	customTypes.DecimalValue UnitPrice = 5;
+}
+
+message Products {
+	repeated Product items = 1;
+}
+
+message ProductId {
+	int32 productId = 1;
+}
